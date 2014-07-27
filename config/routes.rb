@@ -6,7 +6,7 @@ PeekChallenge::Application.routes.draw do
   # root 'welcome#index'
 
   # Example resource route within a namespace:
-    namespace :api do
+    namespace :api, defaults: {format: 'json'} do
       resources :timeslot, only: [:index, :create]
       resources :boat, only: [:index, :create]
       resources :assignment, only: :index
