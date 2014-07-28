@@ -17,7 +17,7 @@ ActiveRecord::Schema.define(version: 20140724055325) do
   enable_extension "plpgsql"
 
   create_table "assignments", force: true do |t|
-    t.integer  "booking_id"
+    t.integer  "boat_id"
     t.integer  "timeslot_id"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -39,7 +39,9 @@ ActiveRecord::Schema.define(version: 20140724055325) do
 
   create_table "timeslots", force: true do |t|
     t.datetime "start_time"
-    t.integer  "duration_in_minutes"
+    t.integer  "duration"
+    t.integer  "availability_count", default: 0
+    t.integer  "customer_count",     default: 0
     t.datetime "created_at"
     t.datetime "updated_at"
   end
