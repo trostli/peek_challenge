@@ -38,10 +38,10 @@ ActiveRecord::Schema.define(version: 20140724055325) do
   end
 
   create_table "timeslots", force: true do |t|
-    t.datetime "start_time",                     null: false
-    t.integer  "duration",                       null: false
-    t.integer  "availability_count", default: 0
-    t.integer  "customer_count",     default: 0
+    t.integer  "start_time",                 null: false
+    t.integer  "duration",                   null: false
+    t.integer  "availability",   default: 0
+    t.integer  "customer_count", default: 0
     t.datetime "created_at"
     t.datetime "updated_at"
   end

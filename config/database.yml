@@ -4,7 +4,7 @@ development:
   database: Peek_challenge_development
   pool: 5
 
-test:
+test: &test
   adapter: postgresql
   encoding: unicode
   database: Peek_challenge_test
@@ -15,3 +15,6 @@ production:
   encoding: unicode
   database: Peek_challenge_production
   pool: 5
+
+cucumber:
+  <<: *test

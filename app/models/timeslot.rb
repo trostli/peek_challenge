@@ -1,8 +1,14 @@
 class Timeslot < ActiveRecord::Base
   has_many :bookings
-  has_many :assignments
+  has_many :assignments, inverse_of: :timeslot
   has_many :boats, through: :assignments
 
-  validates :start_time, :duration, presence: true
-  validates :duration, numericality: { only_integer: true, greater_than: 0 }
+  validates :start_time, :duration, presence: true, numericality: { only_integer: true, greater_than: 0 }
+
+  def as_json(options={})
+    json = super( include: { boats: { only: :id } } )
+    json["boats"].map! { |boat_id| boat_id = boat_id.values[0] }
+    json
+  end
+
 end

@@ -11,8 +11,15 @@ gem 'json'
 gem 'jbuilder', '~> 1.2'
 
 group :development, :test do
-  gem 'rspec-rails'
   gem 'pry'
+end
+
+group :test do
+  gem 'rspec-rails'
+  gem 'cucumber-rails', :require => false
+gem 'cucumber-api-steps', :require => false
+  # database_cleaner is not required, but highly recommended
+  gem 'database_cleaner'
 end
 
 group :development do
