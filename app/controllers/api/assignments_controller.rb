@@ -12,7 +12,6 @@ module Api
     def create
       @assignment = Assignment.new(assignment_params)
       if @assignment.save
-        update_timeslot_availability
         render json: @assignment, status: 200
       else
         render json: { errors: @assignment.errors.full_messages }, status: 400
@@ -20,12 +19,6 @@ module Api
     end
 
     private
-
-    def update_timeslot_availability
-      boat_capacity = @assignment.boat.capacity
-      @assignment.timeslot.availability += boat_capacity
-      @assignment.timeslot.save
-    end
 
     def assignment_params
       params.require(:assignment).permit(:timeslot_id, :boat_id)

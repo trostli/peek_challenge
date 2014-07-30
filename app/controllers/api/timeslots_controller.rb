@@ -6,15 +6,15 @@ module Api
     respond_to :json
 
     def index
-      if (params[:date])
-        beginning_of_queried_date_timestamp = Time.parse(params[:date]).to_i
+      update_timeslots(Timeslot.all)
+      if (params[:timeslot][:date])
+        beginning_of_queried_date_timestamp = Time.parse(params[:timeslot][:date]).to_i
         end_of_queried_date_timestamp = beginning_of_queried_date_timestamp + 86400
 
         timeslots = Timeslot.where("start_time >= :start_date AND start_time <= :end_date", {start_date: beginning_of_queried_date_timestamp, end_date: end_of_queried_date_timestamp})
       else
         timeslots = Timeslot.all
       end
-
       render json: timeslots, status: 200
     end
 
@@ -29,6 +29,26 @@ module Api
     end
 
     private
+
+    def update_timeslots(timeslots)
+
+      timeslots.each do |timeslot|
+        if timeslot.boats != []
+          available_boats = timeslot.boats
+          available_boats = available_boats.sort_by { |boat| boat.capacity }
+          boat_capacities = available_boats.map { |boat| boat.capacity }
+          timeslot.availability = boat_capacities[-1]
+
+          timeslot.bookings.each do |booking|
+            boat_capacities[-1] -= booking.size
+            boat_capacities.sort!
+            timeslot.availability = boat_capacities[-1]
+            timeslot.customer_count += booking.size
+          end
+        end
+        timeslot.save
+      end
+    end
 
     def format_params(params)
       params[:start_time] = params[:start_time].to_i

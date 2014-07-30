@@ -2,6 +2,6 @@ class Assignment < ActiveRecord::Base
   belongs_to :boat
   belongs_to :timeslot
 
-  validates :boat, uniqueness: { scope: :timeslot }
-  validates :boat, :timeslot, presence: true
+  validates_uniqueness_of :boat_id, scope: :timeslot_id
+  validates :boat_id, :timeslot_id, presence: true
 end
