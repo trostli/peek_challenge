@@ -1,6 +1,6 @@
 Feature: API
 
-  Scenario: Case 1
+  Scenario: Case 1 - The first party of six goes on the Amazon Express, leaving 2 slots on that boat and 4 on the other. The max party you can now handle is four.
     Given I send and accept JSON
     When I send a POST request to "/api/timeslot" with the following:
       """
@@ -55,7 +55,7 @@ Feature: API
             }]
       """
 
-  Scenario: Case 2
+  Scenario: Case 2 - Once you book against the second timeslot, it is now using the boat. It gets the boat's remaining capacity, leaving the other timeslot without a boat and unbookable.
     Given I send and accept JSON
     When I send a POST request to "/api/timeslot" with the following:
       """
@@ -98,28 +98,28 @@ Feature: API
             "boats": [3]
             }]
       """
-    # Then I send a POST request to "/api/booking" with the following:
-    #   """
-    #   {"booking":{"timeslot_id": "2", "size": "2" }}
-    #   """
-    # And I send a GET request to "/api/timeslots" with the following:
-    #   """
-    #   {"timeslot":{"date": "2014-07-22" }}
-    #   """
-    # Then the JSON response should be:
-    #   """
-    #   [{    "id": 1,
-    #         "start_time": 1406052000,
-    #         "duration": 120,
-    #         "availability": 0,
-    #         "customer_count": 0,
-    #         "boats": [1]
-    #         },
-    #         {"id": 2,
-    #         "start_time": 1406052000,
-    #         "duration": 120,
-    #         "availability": 6,
-    #         "customer_count": 2,
-    #         "boats": [1]
-    #         }]
-    #   """
+    Then I send a POST request to "/api/booking" with the following:
+      """
+      {"booking":{"timeslot_id": "3", "size": "2" }}
+      """
+    And I send a GET request to "/api/timeslots" with the following:
+      """
+      {"timeslot":{"date": "2014-07-22" }}
+      """
+    Then the JSON response should be:
+      """
+      [{    "id": 2,
+            "start_time": 1406052000,
+            "duration": 120,
+            "availability": 0,
+            "customer_count": 0,
+            "boats": [3]
+            },
+            {"id": 3,
+            "start_time": 1406055600,
+            "duration": 120,
+            "availability": 6,
+            "customer_count": 2,
+            "boats": [3]
+            }]
+      """

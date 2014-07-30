@@ -1,4 +1,3 @@
-require 'awesome_print'
 require 'time'
 
 module Api
@@ -31,8 +30,7 @@ module Api
     private
 
     def update_timeslots(timeslots)
-
-      timeslots.each do |timeslot|
+      timeslots.each_with_index do |timeslot, i|
         if timeslot.boats != []
           available_boats = timeslot.boats
           available_boats = available_boats.sort_by { |boat| boat.capacity }
@@ -42,11 +40,15 @@ module Api
           timeslot.bookings.each do |booking|
             boat_capacities[-1] -= booking.size
             boat_capacities.sort!
-            timeslot.availability = boat_capacities[-1]
+            timeslot.availability = boat_capacities.pop
             timeslot.customer_count += booking.size
           end
+          if timeslots[i-1].bookings == [] && boat_capacities == []
+            timeslots[i-1].availability = 0
+            timeslots[i-1].save!
+          end
         end
-        timeslot.save
+        timeslot.save!
       end
     end
 
